@@ -420,8 +420,22 @@ const sfx={
 };
 function say(text,force){
   if(!soundOn&&!force)return;
-  try{const s=window.speechSynthesis;if(!s)return;s.cancel();const u=new SpeechSynthesisUtterance(text);
-    u.lang='en-GB';u.rate=.85;u.pitch=1.1;const v=s.getVoices().find(v=>/en[-_]GB/i.test(v.lang));if(v)u.voice=v;s.speak(u);}catch(e){}
+  try{
+    const s=window.speechSynthesis;
+    if(!s)return;
+    s.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-GB';
+    u.rate=.85;
+    u.pitch=1.15;
+    const voices=s.getVoices();
+    // Prefer a likely feminine English voice; fall back to any British English voice.
+    const feminine=voices.find(v=>/^en[-_]GB/i.test(v.lang)&&/(female|woman|samantha|victoria|serena|kate|libby|sonia|hazel|aria|jenny|maisie|moira|fiona)/i.test(v.name))
+      ||voices.find(v=>/^en[-_]US/i.test(v.lang)&&/(female|woman|samantha|victoria|siri|ava|allison|aria|jenny|karen|susan|zira)/i.test(v.name))
+      ||voices.find(v=>/^en[-_]GB/i.test(v.lang));
+    if(feminine)u.voice=feminine;
+    s.speak(u);
+  }catch(e){}
 }
 
 /* ---------- board ---------- */
