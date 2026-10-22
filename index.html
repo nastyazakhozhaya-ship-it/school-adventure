@@ -1,0 +1,706 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Colorful School Adventure</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Layout: one toy table. Setup = stacked brick panels; play = studded baseplate board (left) + control tray (right), stacking under 960px. Single deliberate LEGO look, no dark variant. */
+  --sky:#2B7BE0; --plate:#44B35C; --plate-d:#2E8E45; --ink:#1A2733; --muted:#566676;
+  --red:#D01012; --red-d:#8F0A0C; --blue:#0B5FCB; --blue-d:#07418C;
+  --yellow:#FFD21F; --yellow-d:#B88A00; --green:#2FA84F; --green-d:#1D7435;
+  --orange:#FF8A18; --purple:#8445C6; --grey:#8E979D; --grey-d:#5E676D; --turq:#19D3C5; --turq-d:#0E8F86;
+  --display:'Lilita One','Baloo 2','Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif;
+  --body:'Nunito','Trebuchet MS',system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--sky);background-image:radial-gradient(circle at 50% 50%,rgba(255,255,255,.16) 0 7px,transparent 8px);background-size:56px 56px;color:var(--ink);font-family:var(--body);font-weight:800;font-size:18px;line-height:1.3}
+#app{max-width:1500px;margin:0 auto;padding-block:14px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit}
+:focus-visible{outline:4px solid var(--ink);outline-offset:3px}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(24px,3vw,34px);margin:0 0 12px;letter-spacing:.02em}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px}
+.title{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(30px,5vw,58px);line-height:1.05;letter-spacing:.02em}
+.title .w{display:inline-block;margin-right:.3em;white-space:nowrap}
+.title .l{display:inline-block;text-shadow:-2px -2px 0 var(--ink),2px -2px 0 var(--ink),-2px 2px 0 var(--ink),2px 2px 0 var(--ink),0 5px 0 var(--ink),0 9px 10px rgba(0,0,0,.35)}
+.topbtns{display:flex;gap:14px;flex-wrap:wrap;padding-top:10px}
+.lead{color:#fff;font-size:clamp(18px,2vw,24px);margin:10px 0 0;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+
+/* brick panel and buttons */
+.panel{--pc:#fff;background:var(--pc);border-radius:22px;padding:20px;position:relative;margin-top:16px;box-shadow:0 8px 0 rgba(0,0,0,.18),0 18px 28px rgba(0,0,0,.22)}
+.panel::before{content:"";position:absolute;left:22px;right:22px;top:-9px;height:9px;background:radial-gradient(ellipse 15px 7px at 50% 100%,var(--pc) 96%,transparent 100%) 0 0/44px 9px repeat-x}
+.btn{--c:var(--red);--cd:var(--red-d);position:relative;font-family:var(--display);font-weight:400;font-size:clamp(20px,2.2vw,30px);letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--c);border:0;border-radius:14px;padding:16px 26px;min-height:64px;cursor:pointer;margin-top:12px;box-shadow:0 8px 0 var(--cd),0 14px 18px rgba(0,0,0,.28);transition:transform .08s,box-shadow .08s;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+.btn::before,.btn::after{content:"";position:absolute;top:-9px;width:28px;height:11px;border-radius:7px 7px 2px 2px;background:var(--c);box-shadow:inset 0 3px 0 rgba(255,255,255,.35)}
+.btn::before{left:16%}.btn::after{right:16%}
+.btn:active:not(:disabled){transform:translateY(6px);box-shadow:0 2px 0 var(--cd),0 6px 10px rgba(0,0,0,.25)}
+.btn:disabled{filter:grayscale(.9) opacity(.65);cursor:not-allowed}
+.btn.small{font-size:clamp(16px,1.6vw,20px);min-height:52px;padding:10px 20px}
+.btn.big{width:100%;font-size:clamp(24px,2.6vw,34px);min-height:76px}
+.btn.blue{--c:var(--blue);--cd:var(--blue-d)}
+.btn.green{--c:var(--green);--cd:var(--green-d)}
+.btn.yellow{--c:var(--yellow);--cd:var(--yellow-d);color:var(--ink);text-shadow:none}
+.btn.grey{--c:var(--grey);--cd:var(--grey-d)}
+.btn.turq{--c:var(--turq);--cd:var(--turq-d);color:#08302D;text-shadow:none}
+.btn.on{outline:4px solid var(--ink);outline-offset:3px}
+.btn.pulse:not(:disabled){animation:pulse 1.1s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.04)}}
+.row{display:flex;flex-wrap:wrap;gap:16px}
+
+/* setup */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin:8px 0 8px}
+.card{background:#F1F5F9;border:0;border-radius:18px;padding:14px 10px 12px;cursor:pointer;display:grid;justify-items:center;gap:4px;box-shadow:0 6px 0 #C3CDD6;transition:transform .12s}
+.card:hover:not(:disabled){transform:translateY(-4px)}
+.card:disabled{opacity:.45;cursor:not-allowed}
+.card svg{height:120px;width:auto}
+.card b{font-family:var(--display);font-weight:400;font-size:26px}
+.card small{font-size:16px;color:var(--muted)}
+
+/* game layout */
+.game{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start}
+.boardwrap{width:min(100%,max(320px,calc((100dvh - 120px) * 11 / 7)));margin:22px auto 0}
+#board{position:relative;aspect-ratio:11/7;container-type:inline-size}
+.plate{position:absolute;inset:0;border-radius:2.2cqw;overflow:hidden;background:var(--plate);box-shadow:0 1.2cqw 0 var(--plate-d),0 2.4cqw 3cqw rgba(0,0,0,.35)}
+.plate::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#7BD98E 0 22%,#3A9F50 26% 34%,transparent 36%) 0 0/2.2727cqw 2.2727cqw}
+.sc{position:absolute;pointer-events:none}
+.sc svg{display:block;width:100%;height:auto}
+.tile{position:absolute;width:9.0909%;height:14.2857%}
+.tile .face{position:absolute;inset:7%;border-radius:1.1cqw;background:var(--tc);box-shadow:inset 0 .35cqw 0 rgba(255,255,255,.45),0 .7cqw 0 var(--td),0 1.2cqw 1.2cqw rgba(0,0,0,.28);display:grid;place-items:center}
+.tile .num{position:absolute;left:6%;top:6%;width:30%;aspect-ratio:1;border-radius:50%;background:rgba(0,0,0,.2);color:var(--nc,#fff);font-size:1.6cqw;display:grid;place-items:center;font-family:var(--display);font-weight:400}
+.tile .ic{width:55%;height:auto}
+.tile .em{font-size:4.2cqw;line-height:1}
+.tile .lab{font-family:var(--display);font-weight:400;font-size:1.8cqw;color:#fff;letter-spacing:.04em;text-shadow:0 .2cqw 0 rgba(0,0,0,.3)}
+.t-C{--tc:#fff;--td:#BCC7D0;--nc:var(--ink)}
+.t-O{--tc:#2F7BDB;--td:#1B4E94}
+.t-S{--tc:#8445C6;--td:#5B2D8E}
+.t-STAR{--tc:#FFD21F;--td:#B88A00;--nc:var(--ink)}
+.t-ROLL{--tc:#19D3C5;--td:#0E8F86}
+.t-FWD{--tc:#FF8A18;--td:#B85A00}
+.t-BACK{--tc:#A9B2B8;--td:#707A81}
+.t-start{--tc:#D01012;--td:#8F0A0C}
+.t-finish .face{background:repeating-conic-gradient(#1A2733 0 25%,#fff 0 50%) 0 0/3.4cqw 3.4cqw}
+.t-finish .lab{background:#fff;color:var(--ink);padding:.2cqw .7cqw;border-radius:.6cqw;text-shadow:none}
+.tile.here .face{animation:pulse .9s ease-in-out infinite}
+.token{position:absolute;width:calc(5.2cqw*var(--s,1));height:calc(8.7cqw*var(--s,1));z-index:3;pointer-events:none;transform:translate(calc(-50% + var(--ox,0cqw)),calc(-74% + var(--oy,0cqw)));transition:left .3s ease,top .3s ease}
+.token svg{display:block;width:100%;height:100%;overflow:visible}
+.token.active{z-index:5}
+.token.active::before{content:"";position:absolute;left:50%;top:-1.9cqw;margin-left:-.9cqw;border:.9cqw solid transparent;border-top:1.2cqw solid #fff;filter:drop-shadow(0 0 .25cqw #1A2733);animation:bob .8s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(.6cqw)}}
+.token.hop svg{animation:tokhop .3s}
+@keyframes tokhop{50%{transform:translateY(-1.8cqw)}}
+.drop{animation:drop .5s cubic-bezier(.3,1.4,.5,1) backwards}
+@keyframes drop{from{transform:translateY(-5cqw);opacity:0}}
+
+/* tray */
+.tray{margin-top:22px}
+.turn{display:flex;align-items:center;gap:14px}
+.turn svg{height:92px;width:auto;flex:none}
+.turnname{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.1}
+.turnpos{color:var(--muted);font-size:19px}
+.star{width:1.1em;height:1.1em;vertical-align:-.2em}
+.bigstars{margin-left:auto;font-family:var(--display);font-weight:400;font-size:32px;display:flex;align-items:center;gap:4px}
+.pop{animation:starpop .6s}
+@keyframes starpop{40%{transform:scale(1.6) rotate(-8deg)}}
+.dicearea{--d:92px;display:grid;justify-items:center;margin:10px 0 0}
+.scene{width:calc(var(--d)*2);height:calc(var(--d)*1.7);perspective:700px;display:grid;place-items:center;position:relative}
+.dhop,.dtilt,.dice{transform-style:preserve-3d;width:var(--d);height:var(--d);position:relative}
+.dtilt{transform:rotateX(-22deg) rotateY(-28deg)}
+.dhop.go{animation:dicehop 1.4s ease-out}
+@keyframes dicehop{0%{transform:translateY(0)}22%{transform:translateY(-70px)}50%{transform:translateY(0)}65%{transform:translateY(-20px)}80%{transform:translateY(0)}90%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+.dshadow{position:absolute;bottom:4%;width:calc(var(--d)*1.1);height:calc(var(--d)*.2);background:radial-gradient(ellipse,rgba(0,0,0,.35),transparent 70%)}
+.face{position:absolute;inset:0;border-radius:calc(var(--d)*.14);background:linear-gradient(145deg,#EE3A39,#B00D10);border:3px solid var(--red-d);display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);padding:13%}
+.pip{width:82%;height:82%;align-self:center;justify-self:center;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 25%,#EEE 48%,#C5CACE 100%);box-shadow:0 2px 0 #8d9399,0 3px 5px rgba(0,0,0,.35)}
+.f1{transform:translateZ(calc(var(--d)/2))}
+.f6{transform:rotateY(180deg) translateZ(calc(var(--d)/2))}
+.f2{transform:rotateY(90deg) translateZ(calc(var(--d)/2))}
+.f5{transform:rotateY(-90deg) translateZ(calc(var(--d)/2))}
+.f3{transform:rotateX(90deg) translateZ(calc(var(--d)/2))}
+.f4{transform:rotateX(-90deg) translateZ(calc(var(--d)/2))}
+.rollmsg{min-height:2.7em;text-align:center;font-family:var(--display);font-weight:400;font-size:24px;line-height:1.2;margin-top:6px}
+.score{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:10px}
+.prow{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:8px 12px;border-radius:14px;background:#F1F5F9;border:3px solid transparent}
+.prow.cur{border-color:var(--pc);background:#fff;box-shadow:0 0 0 2px var(--ink)}
+.prow svg{height:50px;width:auto}
+.pname{font-family:var(--display);font-weight:400;font-size:22px;line-height:1}
+.bar{height:14px;border-radius:7px;background:#D5DCE2;overflow:hidden;margin:4px 0 2px}
+.bar i{display:block;height:100%;background:var(--pc);border-radius:7px;transition:width .35s}
+.psub{font-size:15px;color:var(--muted)}
+.pst{font-family:var(--display);font-weight:400;font-size:26px;display:flex;align-items:center;gap:3px}
+
+/* overlays */
+.overlay{position:fixed;inset:0;z-index:50;background:rgba(10,30,60,.7);display:flex;overflow:auto;padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.qcard,.dlg{margin:auto;background:#fff;border-radius:26px;padding:22px;width:min(100%,820px);position:relative;box-shadow:0 10px 0 rgba(0,0,0,.2),0 24px 40px rgba(0,0,0,.35)}
+.qcard{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;animation:drop .4s cubic-bezier(.3,1.4,.5,1) backwards}
+.qtag{justify-self:start;font-family:var(--display);font-weight:400;font-size:22px;color:#fff;background:var(--blue);padding:6px 18px;border-radius:10px;letter-spacing:.06em}
+.q-object .qtag{background:#2F7BDB}.q-speak .qtag{background:var(--purple)}.q-color .qtag{background:var(--red)}
+.qpic{background:#CFE6FF;border-radius:18px;padding:10px;display:grid;place-items:center;min-width:0}
+.qpic svg{width:100%;max-width:340px;height:auto;max-height:36dvh}
+.qprompt{font-family:var(--display);font-weight:400;font-size:clamp(28px,4vw,42px);line-height:1.15}
+.blank{display:inline-block;min-width:3.2em;border-bottom:5px dashed var(--purple);text-align:center;color:var(--purple)}
+.choice{position:relative;display:block;width:100%;text-align:left;font-family:var(--display);font-weight:400;font-size:clamp(24px,3vw,34px);padding:14px 20px;min-height:68px;border:0;border-radius:14px;background:#fff;color:var(--ink);box-shadow:inset 0 0 0 3px #CBD4DC,0 7px 0 #B9C3CC;margin-top:14px;cursor:pointer}
+.choice::before,.choice::after{content:"";position:absolute;top:-8px;width:24px;height:9px;border-radius:6px 6px 2px 2px;background:#fff;box-shadow:inset 0 0 0 2px #CBD4DC}
+.choice::before{left:14%}.choice::after{right:14%}
+.choice:hover:not(:disabled){background:#FFF6CC}
+.choice.wrong{background:#FFD9D9;color:var(--red-d);box-shadow:inset 0 0 0 3px var(--red),0 7px 0 #E8A3A3;animation:shake .4s}
+.choice.right{background:#C9F2D1;color:var(--green-d);box-shadow:inset 0 0 0 3px var(--green),0 7px 0 #8FCF9C}
+.choice:disabled{cursor:default}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.qfeedback{min-height:1.4em;font-family:var(--display);font-weight:400;font-size:clamp(24px,3vw,32px);margin-top:14px}
+.qfeedback.good{color:var(--green-d)}.qfeedback.bad{color:var(--red)}
+.dlg h3{font-family:var(--display);font-weight:400;font-size:24px;margin:16px 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{display:inline-flex;align-items:center;gap:8px;background:#F1F5F9;border-radius:999px;padding:4px 14px 4px 5px;font-family:var(--display);font-size:17px;letter-spacing:.04em}
+.chips i{width:26px;height:26px;border-radius:50%;box-shadow:inset 0 0 0 2px rgba(0,0,0,.25)}
+.qactions{display:flex;flex-wrap:wrap;gap:14px}
+.dlg ol{padding-left:1.3em;margin:0 0 12px;font-size:22px}
+.dlg li{margin-bottom:6px}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px 16px;font-size:19px;margin-top:8px}
+.legend div{display:flex;align-items:center;gap:12px}
+.legend .sw{position:relative;flex:none;width:50px;height:50px;border-radius:10px;background:var(--tc);box-shadow:0 4px 0 var(--td);display:grid;place-items:center;font-size:26px}
+.legend .sw svg{width:32px;height:auto}
+.winfig svg{height:150px;width:auto}
+.dlg.win{text-align:center}
+.dlg.win h2{font-size:clamp(34px,6vw,60px)}
+.finalscore{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 26px;font-family:var(--display);font-size:26px;margin:10px 0}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.confetti i{position:absolute;top:-30px;width:22px;height:14px;border-radius:3px;animation:fall linear infinite}
+@keyframes fall{to{transform:translateY(115dvh) rotate(var(--r))}}
+
+@media(max-width:960px){.game{grid-template-columns:minmax(0,1fr)}.tray{margin-top:10px}}
+@media(min-width:780px){.qcard{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);column-gap:22px}.qtag{grid-column:1/-1}.qright{grid-column:2}.qpic{grid-column:1;grid-row:2;align-self:start}}
+@container (max-width:520px){.num{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+<div id="app">
+  <header class="top">
+    <h1 class="title" id="title" aria-label="Colorful School Adventure!"></h1>
+    <div class="topbtns">
+      <button class="btn small yellow" id="rulesBtn" type="button">HOW TO PLAY</button>
+      <button class="btn small turq" id="soundBtn" type="button" aria-pressed="true">SOUND: ON</button>
+    </div>
+  </header>
+
+  <section id="setup">
+    <p class="lead">Roll the dice, build your way to FINISH and win stars with English words!</p>
+    <div class="panel">
+      <h2>How many players?</h2>
+      <div class="row" id="countRow"></div>
+    </div>
+    <div class="panel">
+      <h2 id="pickTitle">Player 1, pick your character!</h2>
+      <div class="cards" id="cards"></div>
+      <div class="row">
+        <button class="btn big green" id="startBtn" type="button" hidden>START THE GAME!</button>
+        <button class="btn small grey" id="resetPicks" type="button">CHOOSE AGAIN</button>
+      </div>
+    </div>
+  </section>
+
+  <main id="game" class="game" hidden>
+    <div class="boardwrap"><div id="board"><div class="plate" id="plate"></div></div></div>
+    <aside class="tray panel">
+      <div class="turn">
+        <div id="turnFig"></div>
+        <div><div class="turnname" id="turnName">Ruby's turn</div><div class="turnpos" id="turnPos">Space 0 of 36</div></div>
+        <div class="bigstars" id="turnStars"></div>
+      </div>
+      <div class="dicearea">
+        <div class="scene"><div class="dshadow"></div>
+          <div class="dhop" id="dhop"><div class="dtilt"><div class="dice" id="dice"></div></div></div>
+        </div>
+        <div class="rollmsg" id="rollmsg" aria-live="polite">Press ROLL THE DICE!</div>
+      </div>
+      <button class="btn red big" id="rollBtn" type="button">ROLL THE DICE!</button>
+      <button class="btn blue big" id="nextBtn" type="button" disabled>NEXT PLAYER</button>
+      <ul class="score" id="score"></ul>
+    </aside>
+  </main>
+</div>
+
+<div id="qmodal" class="overlay" hidden role="dialog" aria-modal="true" aria-label="Question">
+  <div class="qcard" id="qcard">
+    <div class="qtag" id="qtag">COLOR SPACE</div>
+    <div class="qpic" id="qpic"></div>
+    <div class="qright">
+      <div class="qprompt" id="qprompt"></div>
+      <div id="qchoices"></div>
+      <div class="qfeedback" id="qfeedback" aria-live="assertive"></div>
+      <div class="qactions">
+        <button class="btn yellow" id="sayBtn" type="button">SAY IT AGAIN</button>
+        <button class="btn green" id="contBtn" type="button" hidden>CONTINUE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="rules" class="overlay" hidden role="dialog" aria-modal="true" aria-label="How to play">
+  <div class="dlg">
+    <h2>How to play</h2>
+    <ol>
+      <li>Each player chooses a character.</li>
+      <li>Take turns to roll the dice.</li>
+      <li>Move forward the number on the dice.</li>
+      <li>Follow the instructions on your space.</li>
+      <li>Answer English questions to win stars. A wrong answer sends you back 3 spaces!</li>
+      <li>The first player to reach FINISH wins!</li>
+    </ol>
+    <div class="legend" id="legend"></div>
+    <h3>Color words</h3>
+    <div class="chips" id="colorchart"></div>
+    <button class="btn green" id="rulesClose" type="button">LET'S PLAY!</button>
+  </div>
+</div>
+
+<div id="win" class="overlay" hidden role="dialog" aria-modal="true" aria-label="Winner">
+  <div class="confetti" id="confetti"></div>
+  <div class="dlg win">
+    <div class="winfig" id="winFig"></div>
+    <h2 id="winTitle">Ruby wins!</h2>
+    <div class="finalscore" id="finalScore"></div>
+    <div class="row" style="justify-content:center">
+      <button class="btn green" id="againBtn" type="button">PLAY AGAIN</button>
+      <button class="btn blue" id="newBtn" type="button">NEW PLAYERS</button>
+    </div>
+  </div>
+</div>
+<script>
+'use strict';
+const $=s=>document.querySelector(s);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const rnd=n=>Math.floor(Math.random()*n);
+const pick=a=>a[rnd(a.length)];
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;};
+
+const PAL={red:'#D01012',blue:'#0B5FCB',yellow:'#FFD21F',green:'#2FA84F',orange:'#FF8A18',pink:'#FF8FB1',purple:'#8445C6',black:'#232B33',white:'#F7F7F2',brown:'#7A4A21',turquoise:'#19D3C5',grey:'#9AA3A8'};
+const COLORS=Object.keys(PAL);
+const OBJECTS=['bin','clock','classroom','desk','board','chair','window','door'];
+const OBJC={bin:'grey',clock:'black',classroom:'red',desk:'orange',board:'green',chair:'blue',window:'white',door:'brown'};
+
+function shade(hex,p){
+  const n=parseInt(hex.slice(1),16);let r=n>>16,g=(n>>8)&255,b=n&255;
+  const t=p<0?0:255,a=Math.abs(p);
+  r=Math.round((t-r)*a+r);g=Math.round((t-g)*a+g);b=Math.round((t-b)*a+b);
+  return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
+}
+const svg=(inner,vb='0 0 200 160')=>`<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">${inner}</svg>`;
+const ground=(cx=100,rx=72)=>`<ellipse cx="${cx}" cy="148" rx="${rx}" ry="7" fill="#000" opacity=".16"/>`;
+
+/* a front-view LEGO brick with studs on top */
+function brick(x,y,w,h,c,o={}){
+  const sw=o.sw||13,sh=sw*.46,n=o.studs===undefined?Math.max(1,Math.round(w/20)):o.studs;
+  const hi=shade(c,.28),lo=shade(c,-.28),st=shade(c,-.5);
+  let s='';
+  if(n>0){const gap=w/n;for(let i=0;i<n;i++){const cx=x+gap*(i+.5);
+    s+=`<rect x="${cx-sw/2}" y="${y-sh}" width="${sw}" height="${sh+1}" rx="2" fill="${c}" stroke="${st}" stroke-width="1.2"/><ellipse cx="${cx}" cy="${y-sh}" rx="${sw/2}" ry="${sw*.22}" fill="${hi}" stroke="${st}" stroke-width="1.2"/>`;}}
+  s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="${c}" stroke="${st}" stroke-width="1.5"/>`;
+  s+=`<rect x="${x+2}" y="${y+2}" width="${w-4}" height="3" rx="1.5" fill="${hi}" opacity=".7"/>`;
+  s+=`<rect x="${x+2}" y="${y+h-5}" width="${w-4}" height="3.5" rx="1.5" fill="${lo}" opacity=".5"/>`;
+  return s;
+}
+
+const STAR=`<svg class="star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.6 7.2.8-5.4 4.8 1.6 7.1L12 17.7 5.6 21.3l1.6-7.1L1.8 9.4 9 8.6z" fill="#FFD21F" stroke="#B88A00" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
+
+/* ---------- minifigures ---------- */
+const CHARS=[
+  {id:'ruby',name:'Ruby',color:'red',body:'#D01012',ui:'#D01012',hat:{kind:'hair',c:'#5A3418'},pants:'#1F3A8A'},
+  {id:'ben',name:'Ben',color:'blue',body:'#0B5FCB',ui:'#0B5FCB',hat:{kind:'cap',c:'#232B33'},pants:'#232B33'},
+  {id:'sunny',name:'Sunny',color:'yellow',body:'#FFD21F',ui:'#E6B800',hat:{kind:'bow',c:'#B5651D'},pants:'#8445C6'},
+  {id:'gus',name:'Gus',color:'green',body:'#2FA84F',ui:'#2FA84F',hat:{kind:'helmet',c:'#FF8A18'},pants:'#5A3418'},
+  {id:'olly',name:'Olly',color:'orange',body:'#FF8A18',ui:'#FF8A18',hat:{kind:'cap',c:'#0B5FCB'},pants:'#1F3A8A'},
+  {id:'penny',name:'Penny',color:'purple',body:'#8445C6',ui:'#8445C6',hat:{kind:'bow',c:'#232B33'},pants:'#232B33'},
+  {id:'wendy',name:'Wendy',color:'white',body:'#F7F7F2',ui:'#8793A0',hat:{kind:'helmet',c:'#D01012'},pants:'#0B5FCB'},
+  /* optional extra color: players may pick it instead of any default color; the maximum stays 7 players */
+  {id:'tess',name:'Tess',color:'turquoise',extra:true,body:'#19D3C5',ui:'#10A89C',hat:{kind:'cap',c:'#8445C6'},pants:'#232B33'}
+];
+function minifig(ch){
+  const ink='rgba(26,39,51,.55)',skin='#FFD21F',skinD='#E0AF00',h=ch.hat;
+  let hat='';
+  if(h.kind==='hair'||h.kind==='bow') hat+=`<path d="M16 21 C13 6 24 3 30 3 C36 3 47 6 44 21 L40 14 C34 12 26 12 20 14 Z" fill="${h.c}" stroke="${ink}" stroke-width="1.2"/>`;
+  if(h.kind==='bow') hat+=`<path d="M44 12 L54 6 L54 18 Z M44 12 L35 5 L35 17Z" fill="#FF8FB1" stroke="${ink}" stroke-width="1"/><circle cx="44" cy="12" r="3" fill="#D6457A"/>`;
+  if(h.kind==='cap') hat+=`<path d="M16 15 C16 1 44 1 44 15 Z" fill="${h.c}" stroke="${ink}" stroke-width="1.2"/><rect x="34" y="11" width="17" height="4.5" rx="2" fill="${h.c}" stroke="${ink}" stroke-width="1"/>`;
+  if(h.kind==='helmet') hat+=`<path d="M15 19 C15 1 45 1 45 19 Z" fill="${h.c}" stroke="${ink}" stroke-width="1.2"/><rect x="15" y="16" width="30" height="4" rx="1" fill="${shade(h.c,-.25)}"/>`;
+  const stud=`<rect x="25" y="-1" width="10" height="6" rx="2" fill="${h.c}" stroke="${ink}" stroke-width="1"/><ellipse cx="30" cy="-1" rx="5" ry="2.2" fill="${shade(h.c,.3)}" stroke="${ink}" stroke-width="1"/>`;
+  return `<svg viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <ellipse cx="30" cy="97" rx="20" ry="3.5" fill="#000" opacity=".2"/>
+  <rect x="15" y="72" width="14" height="22" rx="2" fill="${ch.pants}" stroke="${ink}" stroke-width="1.2"/><rect x="31" y="72" width="14" height="22" rx="2" fill="${ch.pants}" stroke="${ink}" stroke-width="1.2"/>
+  <rect x="15" y="63" width="30" height="10" rx="2" fill="${ch.pants}" stroke="${ink}" stroke-width="1.2"/>
+  <rect x="4" y="34" width="9" height="27" rx="4" fill="${ch.body}" stroke="${ink}" stroke-width="1.2"/><rect x="47" y="34" width="9" height="27" rx="4" fill="${ch.body}" stroke="${ink}" stroke-width="1.2"/>
+  <circle cx="8.5" cy="63" r="4.2" fill="${skin}" stroke="${ink}" stroke-width="1"/><circle cx="51.5" cy="63" r="4.2" fill="${skin}" stroke="${ink}" stroke-width="1"/>
+  <path d="M13 32 H47 L45 64 H15 Z" fill="${ch.body}" stroke="${ink}" stroke-width="1.2"/>
+  <polygon points="30,41 32,46 37,46 33,49 35,54 30,51 25,54 27,49 23,46 28,46" fill="#fff" opacity=".85"/>
+  <rect x="26" y="29" width="8" height="5" fill="${skinD}"/>
+  <rect x="17" y="6" width="26" height="24" rx="7" fill="${skin}" stroke="${ink}" stroke-width="1.2"/>
+  ${hat}${stud}
+  <circle cx="24.5" cy="20" r="2" fill="#1A2733"/><circle cx="35.5" cy="20" r="2" fill="#1A2733"/>
+  <path d="M23 25 Q30 31 37 25" stroke="#1A2733" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <circle cx="21" cy="25" r="2.4" fill="#FF8FB1" opacity=".5"/><circle cx="39" cy="25" r="2.4" fill="#FF8FB1" opacity=".5"/></svg>`;
+}
+
+/* ---------- school objects ---------- */
+function artDesk(c){const d=shade(c,-.18);
+  return svg(ground()+brick(36,76,14,68,d,{studs:0})+brick(150,76,14,68,d,{studs:0})+brick(50,120,100,8,d,{studs:0})+
+   brick(58,76,68,28,shade(c,.08),{studs:0})+`<circle cx="92" cy="92" r="4" fill="#FFD21F" stroke="#7a5b00" stroke-width="1.2"/>`+
+   brick(22,62,156,14,c,{studs:7})+brick(34,42,34,15,PAL.turquoise,{studs:0})+`<rect x="38" y="46" width="26" height="2.5" fill="#fff" opacity=".7"/>`+
+   `<rect x="126" y="34" width="9" height="23" rx="2" fill="#FFD21F" stroke="#7a5b00" stroke-width="1.2"/><polygon points="126,34 135,34 130.5,26" fill="#F3C8A0" stroke="#7a5b00" stroke-width="1"/>`);}
+function artChair(c){const d=shade(c,-.2);
+  return svg(ground()+brick(48,100,12,44,d,{studs:0})+brick(128,100,12,44,d,{studs:0})+brick(34,86,118,14,c,{studs:5})+brick(34,22,18,66,c,{studs:1}));}
+function artBoard(c){const fr='#8B5A2B';
+  return svg(ground()+brick(54,120,8,26,'#8e979c',{studs:0})+brick(138,120,8,26,'#8e979c',{studs:0})+brick(14,26,172,98,fr,{studs:8})+
+   `<rect x="24" y="36" width="152" height="70" rx="3" fill="${c}" stroke="${shade(c,-.4)}" stroke-width="1.5"/><polygon points="24,36 70,36 40,106 24,106" fill="#fff" opacity=".07"/>`+
+   `<text x="40" y="70" font-family="Lilita One,Arial Rounded MT Bold,sans-serif" font-size="30" fill="#fff" opacity=".92">ABC</text>`+
+   `<path d="M110 90 q10 -14 20 0 t20 0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".9"/><circle cx="150" cy="56" r="9" fill="none" stroke="#FFD21F" stroke-width="3"/>`+
+   brick(30,106,140,12,shade(fr,.12),{studs:0})+`<rect x="40" y="108" width="20" height="5" rx="1.5" fill="#fff"/>`);}
+function artClock(c){const hi=shade(c,.3);let ticks='',studs='';
+  for(let i=0;i<12;i++){const a=i*Math.PI/6,m=i%3===0,r2=m?27:30;
+    ticks+=`<line x1="${(100+Math.sin(a)*34).toFixed(1)}" y1="${(76-Math.cos(a)*34).toFixed(1)}" x2="${(100+Math.sin(a)*r2).toFixed(1)}" y2="${(76-Math.cos(a)*r2).toFixed(1)}" stroke="#232B33" stroke-width="${m?3:1.6}" stroke-linecap="round"/>`;
+    studs+=`<circle cx="${(100+Math.sin(a)*52).toFixed(1)}" cy="${(76-Math.cos(a)*52).toFixed(1)}" r="5" fill="${hi}" stroke="${shade(c,-.5)}" stroke-width="1"/>`;}
+  return svg(ground()+brick(66,136,68,10,shade(c,.1),{studs:0})+`<circle cx="100" cy="76" r="62" fill="${c}" stroke="${shade(c,-.5)}" stroke-width="2"/>`+studs+
+   `<circle cx="100" cy="76" r="40" fill="#FFFDF5" stroke="${shade(c,-.5)}" stroke-width="2"/>`+ticks+
+   `<line x1="100" y1="76" x2="82" y2="62" stroke="#232B33" stroke-width="5" stroke-linecap="round"/><line x1="100" y1="76" x2="116" y2="48" stroke="#232B33" stroke-width="3.5" stroke-linecap="round"/><circle cx="100" cy="76" r="4.5" fill="#D01012"/>`);}
+function artWindow(c){const pane='#9CD3F7',lo=shade(c,-.45),p=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2" fill="${pane}" stroke="${lo}" stroke-width="1.5"/>`;
+  return svg(ground()+brick(28,20,144,110,c,{studs:6})+p(40,32,56,42)+p(104,32,56,42)+p(40,82,56,40)+p(104,82,56,40)+
+   `<ellipse cx="62" cy="54" rx="12" ry="6" fill="#fff"/><ellipse cx="72" cy="50" rx="9" ry="6" fill="#fff"/><circle cx="134" cy="52" r="9" fill="#FFD21F"/>`+
+   `<polygon points="46,82 60,82 48,122 40,122" fill="#fff" opacity=".35"/>`+brick(20,128,160,12,shade(c,-.06),{studs:0})+
+   `<path d="M136 110 h26 l-4 18 h-18z" fill="${PAL.orange}" stroke="${shade(PAL.orange,-.5)}" stroke-width="1.5"/><rect x="133" y="106" width="32" height="6" rx="2" fill="${shade(PAL.orange,.12)}" stroke="${shade(PAL.orange,-.5)}" stroke-width="1.5"/><circle cx="143" cy="98" r="7" fill="#2FA84F"/><circle cx="155" cy="96" r="8" fill="#3DBD5E"/><circle cx="149" cy="88" r="7" fill="#2FA84F"/>`);}
+function artDoor(c){const fr=shade(c,-.28),dk=shade(c,-.22),st=shade(c,-.5);
+  return svg(ground(100,60)+brick(52,18,96,128,fr,{studs:4})+`<rect x="62" y="30" width="76" height="116" rx="3" fill="${c}" stroke="${st}" stroke-width="1.5"/>`+
+   `<rect x="70" y="38" width="60" height="38" rx="3" fill="${dk}" stroke="${st}"/><rect x="70" y="84" width="60" height="54" rx="3" fill="${dk}" stroke="${st}"/>`+
+   `<circle cx="123" cy="104" r="5.5" fill="#FFD21F" stroke="#7a5b00" stroke-width="1.5"/>`);}
+function artBin(c){const lo=shade(c,-.3),st=shade(c,-.5);let ridges='';
+  for(let xt=70;xt<=130;xt+=15){const xb=62+(xt-52)/96*76;ridges+=`<line x1="${xt}" y1="68" x2="${xb.toFixed(1)}" y2="140" stroke="${lo}" stroke-width="3" opacity=".6"/>`;}
+  return svg(ground(100,60)+`<polygon points="52,62 148,62 138,144 62,144" fill="${c}" stroke="${st}" stroke-width="2" stroke-linejoin="round"/>`+ridges+
+   `<ellipse cx="100" cy="62" rx="50" ry="9" fill="${shade(c,-.45)}" stroke="${st}" stroke-width="2"/>`+
+   `<circle cx="84" cy="52" r="13" fill="#fff" stroke="#9aa3a8" stroke-width="2"/><circle cx="114" cy="49" r="11" fill="#fff" stroke="#9aa3a8" stroke-width="2"/><path d="M76 50 l8 6 l6 -8 M108 46 l6 6" stroke="#9aa3a8" stroke-width="1.5" fill="none"/>`+
+   `<rect x="58" y="96" width="84" height="5" fill="${lo}" opacity=".35"/>`);}
+function artClassroom(c){const st=shade(c,-.4);let bricks='';
+  for(let r=0;r<7;r++){const y=62+r*12,off=r%2?10:0;for(let x=20-off;x<220;x+=20){const bx=Math.max(20,x),ex=Math.min(220,x+20);if(ex-bx<4)continue;
+    bricks+=`<rect x="${bx}" y="${y}" width="${ex-bx}" height="12" fill="${c}" stroke="${st}" stroke-width="1"/>`;}}
+  const win=x=>`<rect x="${x}" y="86" width="44" height="34" rx="3" fill="#fff" stroke="#8a8f94" stroke-width="1.5"/><rect x="${x+4}" y="90" width="17" height="26" fill="#9CD3F7"/><rect x="${x+23}" y="90" width="17" height="26" fill="#9CD3F7"/>`;
+  return svg(`<ellipse cx="120" cy="152" rx="108" ry="7" fill="#000" opacity=".16"/>`+bricks+`<polygon points="10,64 120,14 230,64" fill="#5E6A73" stroke="#2f373d" stroke-width="2"/><rect x="8" y="60" width="224" height="8" fill="#4a555c"/>`+
+   `<line x1="120" y1="14" x2="120" y2="2" stroke="#2f373d" stroke-width="2"/><polygon points="120,2 138,8 120,14" fill="#FFD21F" stroke="#7a5b00"/>`+
+   `<circle cx="120" cy="40" r="11" fill="#fff" stroke="#232B33" stroke-width="2"/><line x1="120" y1="40" x2="120" y2="33" stroke="#232B33" stroke-width="2"/><line x1="120" y1="40" x2="126" y2="42" stroke="#232B33" stroke-width="2"/>`+
+   win(36)+win(160)+`<rect x="94" y="72" width="52" height="16" rx="2" fill="${PAL.turquoise}" stroke="${shade(PAL.turquoise,-.55)}"/><text x="120" y="84.5" text-anchor="middle" font-family="Lilita One,Arial,sans-serif" font-size="12" fill="#10343A">SCHOOL</text>`+
+   `<rect x="102" y="100" width="36" height="46" rx="2" fill="#7A4A21" stroke="#3d2610" stroke-width="1.5"/><circle cx="132" cy="124" r="3" fill="#FFD21F"/><rect x="96" y="144" width="48" height="6" fill="#8e979c"/>`,'0 0 240 160');}
+function artTree(){return svg(brick(22,52,16,28,PAL.brown,{studs:0})+brick(6,34,48,20,PAL.green,{studs:2,sw:12})+brick(12,18,36,18,shade(PAL.green,.15),{studs:2,sw:12})+brick(20,6,20,14,shade(PAL.green,.3),{studs:1,sw:12}),'0 0 60 84');}
+const OBJ_ART={bin:artBin,clock:artClock,classroom:artClassroom,desk:artDesk,board:artBoard,chair:artChair,window:artWindow,door:artDoor};
+
+/* ---------- color items ---------- */
+function artItem(shape,c){const hi=shade(c,.35),lo=shade(c,-.3),st=shade(c,-.5);
+  switch(shape){
+  case 'brick':return svg(ground(100,80)+brick(28,72,144,58,c,{studs:4,sw:28}));
+  case 'balloon':return svg(ground(100,34)+`<path d="M100 124 q-9 8 0 16 t0 8" fill="none" stroke="#6b747a" stroke-width="2"/><ellipse cx="100" cy="64" rx="42" ry="50" fill="${c}" stroke="${st}" stroke-width="2"/><polygon points="100,112 92,124 108,124" fill="${lo}"/><ellipse cx="84" cy="44" rx="9" ry="15" fill="#fff" opacity=".35" transform="rotate(-25 84 44)"/>`);
+  case 'crayon':return svg(ground(100,80)+`<g transform="rotate(-14 100 84)"><rect x="34" y="66" width="104" height="36" rx="4" fill="${c}" stroke="${st}" stroke-width="2"/><rect x="50" y="66" width="48" height="36" fill="${lo}" opacity=".5"/><polygon points="138,66 174,84 138,102" fill="${c}" stroke="${st}" stroke-width="2"/><polygon points="158,75 174,84 158,93" fill="${lo}"/></g>`);
+  case 'ball':return svg(ground(100,48)+`<circle cx="100" cy="78" r="52" fill="${c}" stroke="${st}" stroke-width="2"/><circle cx="82" cy="58" r="15" fill="#fff" opacity=".3"/><path d="M52 90 Q100 128 148 90" fill="none" stroke="${lo}" stroke-width="3" opacity=".5"/>`);
+  case 'apple':return svg(ground(100,50)+`<path d="M100 52 C70 38 38 60 46 98 C52 130 80 142 100 134 C120 142 148 130 154 98 C162 60 130 38 100 52 Z" fill="${c}" stroke="${st}" stroke-width="2"/><path d="M100 52 C100 40 104 32 110 26" stroke="#5A3418" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M108 36 C120 22 138 24 142 30 C134 42 118 44 108 36Z" fill="#2FA84F" stroke="#1D7435" stroke-width="1.5"/><path d="M66 72 C62 84 64 94 68 100" stroke="#fff" stroke-width="6" fill="none" opacity=".35" stroke-linecap="round"/>`);
+  }}
+/* ---------- sound & speech ---------- */
+let soundOn=true,actx=null;
+function A(){if(!soundOn)return null;try{if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();if(actx.state==='suspended')actx.resume();}catch(e){actx=null;}return actx;}
+function tone(f,d,type='sine',v=.16,t0=0,f2){const a=A();if(!a)return;const t=a.currentTime+t0,o=a.createOscillator(),g=a.createGain();
+  o.type=type;o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+d);
+  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.015);g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+d+.03);}
+function clack(t0,v){const a=A();if(!a)return;const len=Math.floor(a.sampleRate*.03),buf=a.createBuffer(1,len,a.sampleRate),d=buf.getChannelData(0);
+  for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3);
+  const s=a.createBufferSource(),g=a.createGain();s.buffer=buf;g.gain.value=v;s.connect(g);g.connect(a.destination);s.start(a.currentTime+t0);}
+const sfx={
+  roll(){for(let i=0;i<14;i++)clack(i*.085+Math.random()*.02,.1+Math.random()*.08);},
+  step(){tone(660,.09,'square',.06);},
+  good(){[523,659,784,1047].forEach((f,i)=>tone(f,.2,'triangle',.16,i*.09));},
+  bad(){tone(240,.28,'sawtooth',.09,0,140);},
+  star(){tone(1319,.15,'sine',.15);tone(1976,.35,'sine',.13,.1);},
+  up(){tone(400,.4,'square',.07,0,900);},
+  down(){tone(500,.4,'square',.07,0,200);},
+  again(){tone(520,.12,'triangle',.14);tone(780,.2,'triangle',.14,.12);},
+  win(){[523,659,784,659,784,1047,1319].forEach((f,i)=>tone(f,.24,'triangle',.17,i*.12));}
+};
+function say(text,force){
+  if(!soundOn&&!force)return;
+  try{const s=window.speechSynthesis;if(!s)return;s.cancel();const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-GB';u.rate=.85;u.pitch=1.1;const v=s.getVoices().find(v=>/en[-_]GB/i.test(v.lang));if(v)u.voice=v;s.speak(u);}catch(e){}
+}
+
+/* ---------- board ---------- */
+const TOTAL=36,COLS=11,ROWS=7;
+const LAYOUT=['start','C','O','S','STAR','C','O','FWD','S','C','O','BACK','C','S','ROLL','O','STAR','C','O','FWD','S','C','O','STAR','BACK','C','O','ROLL','S','C','O','FWD','S','STAR','C','O','finish'];
+function cellOf(i){
+  if(i<=10)return[i,0];
+  if(i===11)return[10,1];
+  if(i===12)return[10,2];
+  if(i<=23)return[10-(i-13),3];
+  if(i===24)return[0,4];
+  if(i===25)return[0,5];
+  return[i-26,6];
+}
+const ICON={
+  C:`<svg class="ic" viewBox="0 0 40 26" aria-hidden="true"><path d="M4 24a16 16 0 0 1 32 0" fill="none" stroke="#D01012" stroke-width="5"/><path d="M10 24a10 10 0 0 1 20 0" fill="none" stroke="#FFD21F" stroke-width="5"/><path d="M16 24a4 4 0 0 1 8 0" fill="none" stroke="#0B5FCB" stroke-width="5"/></svg>`,
+  O:`<svg class="ic" viewBox="0 0 40 34" aria-hidden="true"><path d="M3 17L20 3l17 14z" fill="#fff"/><rect x="7" y="17" width="26" height="16" fill="#fff"/><rect x="17" y="22" width="6" height="11" fill="#2F7BDB"/></svg>`,
+  S:`<svg class="ic" viewBox="0 0 40 34" aria-hidden="true"><path d="M6 3h28a3 3 0 0 1 3 3v15a3 3 0 0 1-3 3H19l-8 8v-8H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3z" fill="#fff"/><circle cx="12" cy="13.5" r="2.4" fill="#8445C6"/><circle cx="20" cy="13.5" r="2.4" fill="#8445C6"/><circle cx="28" cy="13.5" r="2.4" fill="#8445C6"/></svg>`,
+  STAR:'<span class="em">⭐</span>',ROLL:'<span class="em">🎲</span>',FWD:'<span class="em">🚀</span>',BACK:'<span class="em">🔙</span>'
+};
+let tiles=[];
+function buildBoard(){
+  const plate=$('#plate'),board=$('#board');
+  plate.innerHTML='';board.querySelectorAll('.tile,.token').forEach(e=>e.remove());tiles=[];
+  const sc=(art,l,t,w)=>{const d=document.createElement('div');d.className='sc';d.style.cssText=`left:${l}cqw;top:${t}cqw;width:${w}cqw`;d.innerHTML=art;plate.appendChild(d);};
+  const o=n=>OBJ_ART[n](PAL[OBJC[n]]);
+  sc(o('classroom'),3,10.2,25);sc(o('desk'),33,12.4,18);sc(o('chair'),53,12.6,17);sc(o('bin'),72,13.4,14);sc(artTree(),84,13.6,6);
+  sc(o('board'),11,36.9,22);sc(o('clock'),36,37.6,17);sc(o('window'),56,37.8,18);sc(o('door'),77,38.4,14);sc(artTree(),92,40,6);
+  LAYOUT.forEach((t,i)=>{
+    const [c,r]=cellOf(i),el=document.createElement('div');
+    el.className=`tile t-${t} drop`;el.style.left=(c*100/COLS)+'%';el.style.top=(r*100/ROWS)+'%';
+    if(!reduce)el.style.animationDelay=(i*22)+'ms';
+    let inner='';
+    if(t==='start')inner='<span class="lab">START</span>';
+    else if(t==='finish')inner='<span class="lab">FINISH</span>';
+    else inner=ICON[t];
+    el.innerHTML=`<div class="face">${inner}${i>0&&i<TOTAL?`<span class="num">${i}</span>`:''}</div>`;
+    board.appendChild(el);tiles.push(el);
+  });
+  $('#colorchart').innerHTML=COLORS.map(c=>`<span><i style="background:${PAL[c]}"></i>${c.toUpperCase()}</span>`).join('');
+  const lg=[['C','Color question'],['O','School object question'],['S','Speaking challenge'],['STAR','Bonus star'],['ROLL','Roll again'],['FWD','Move forward 2 spaces'],['BACK','Move back 2 spaces']];
+  $('#legend').innerHTML=lg.map(([t,txt])=>`<div><span class="sw t-${t}">${ICON[t].replace('class="ic"','')}</span><span>${txt}</span></div>`).join('');
+}
+
+/* ---------- setup ---------- */
+const S={n:2,picks:[],players:[],turn:0,phase:'setup',busy:false,q:null};
+function renderSetup(){
+  $('#countRow').innerHTML=[2,3,4,5,6,7].map(n=>`<button type="button" class="btn small blue ${n===S.n?'on':''}" data-n="${n}" aria-pressed="${n===S.n}">${n} PLAYERS</button>`).join('');
+  const done=S.picks.length>=S.n;
+  $('#pickTitle').textContent=done?'Everybody is ready!':`Player ${S.picks.length+1}, pick your color!`;
+  $('#cards').innerHTML=CHARS.map(ch=>{const k=S.picks.indexOf(ch.id);
+    return `<button type="button" class="card" data-id="${ch.id}" ${k>=0||done?'disabled':''}>${minifig(ch)}<b>${ch.name}</b><small>${k>=0?'Player '+(k+1):ch.color+(ch.extra?' (extra)':'')}</small></button>`;}).join('');
+  $('#startBtn').hidden=!done;
+}
+document.addEventListener('click',e=>{
+  const n=e.target.closest('[data-n]');if(n&&S.phase==='setup'){S.n=+n.dataset.n;S.picks=[];renderSetup();return;}
+  const c=e.target.closest('.card');if(c&&S.phase==='setup'){if(S.picks.length<S.n)S.picks.push(c.dataset.id);sfx.again();renderSetup();}
+});
+/* ---------- dice ---------- */
+const FACE={1:[0,0],6:[0,180],2:[0,-90],5:[0,90],3:[-90,0],4:[90,0]};
+const PIPS={1:[5],2:[1,9],3:[1,5,9],4:[1,3,7,9],5:[1,3,5,7,9],6:[1,3,4,6,7,9]};
+let spinX=0,spinY=0;
+function buildDice(){
+  $('#dice').innerHTML=[1,2,3,4,5,6].map(n=>`<div class="face f${n}">${PIPS[n].map(p=>`<i class="pip" style="grid-area:${Math.ceil(p/3)}/${(p-1)%3+1}"></i>`).join('')}</div>`).join('');
+  $('#dice').style.transform='rotateX(0deg) rotateY(0deg)';
+}
+async function rollDice(n){
+  const d=$('#dice'),h=$('#dhop');
+  spinX+=360*(2+rnd(2));spinY+=360*(2+rnd(2));
+  const [fx,fy]=FACE[n];
+  d.style.transition=reduce?'transform .25s':'transform 1.4s cubic-bezier(.17,.8,.25,1)';
+  d.style.transform=`rotateX(${fx+spinX}deg) rotateY(${fy+spinY}deg)`;
+  h.classList.remove('go');void h.offsetWidth;if(!reduce)h.classList.add('go');
+  sfx.roll();
+  await sleep(reduce?300:1500);
+}
+
+/* ---------- ui ---------- */
+const cur=()=>S.players[S.turn];
+const msg=t=>{$('#rollmsg').textContent=t;};
+function setButtons(){
+  const roll=$('#rollBtn'),next=$('#nextBtn');
+  roll.disabled=!(S.phase==='roll'&&!S.busy);next.disabled=!(S.phase==='done'&&!S.busy);
+  roll.classList.toggle('pulse',!roll.disabled);next.classList.toggle('pulse',!next.disabled);
+}
+function renderTurn(){
+  const p=cur();if(!p)return;
+  $('#turnFig').innerHTML=minifig(p.char);
+  $('#turnName').textContent=`${p.char.name}'s turn`;
+  $('#turnPos').textContent=p.pos===0?'At START':p.pos>=TOTAL?'At FINISH':`Space ${p.pos} of ${TOTAL}`;
+  $('#turnStars').innerHTML=`${STAR}<span>${p.stars}</span>`;
+}
+function renderScore(){
+  $('#score').innerHTML=S.players.map((p,i)=>`<li class="prow ${i===S.turn?'cur':''}" style="--pc:${p.char.ui}"><span>${minifig(p.char)}</span><div><div class="pname">${p.char.name}${i===S.turn?' ◀':''}</div><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="${TOTAL}" aria-valuenow="${p.pos}"><i style="width:${p.pos/TOTAL*100}%"></i></div><div class="psub">${p.char.color} · Space ${p.pos} of ${TOTAL}</div></div><div class="pst">${STAR}<b>${p.stars}</b></div></li>`).join('');
+}
+let tokens=[];
+function place(){
+  S.players.forEach((p,i)=>{
+    const [c,r]=cellOf(p.pos),el=tokens[i];
+    el.style.left=((c+.5)/COLS*100)+'%';el.style.top=((r+.5)/ROWS*100)+'%';
+    const mates=S.players.filter(q=>q.pos===p.pos),idx=mates.indexOf(p),cnt=mates.length;
+    /* up to 7 figures share a cell: rows of up to 4, nobody is removed or replaced */
+    const perRow=cnt>4?4:cnt,row=Math.floor(idx/4),inRow=idx%4,rowLen=row===0?perRow:cnt-4;
+    const sp=cnt>4?2.1:cnt>1?2.8:0,rows=cnt>4?2:1;
+    el.style.setProperty('--ox',(cnt>1?(inRow-(rowLen-1)/2)*sp:0)+'cqw');
+    el.style.setProperty('--oy',(rows>1?(row===0?-1.4:1.4):(cnt>1&&idx%2?.7:0))+'cqw');
+    el.style.setProperty('--s',cnt>4?.78:cnt>2?.9:1);
+    el.style.zIndex=i===S.turn?6:3+row;
+    el.classList.toggle('active',i===S.turn&&S.phase!=='won');
+  });
+  tiles.forEach(t=>t.classList.remove('here'));
+  const p=cur();if(p&&tiles[p.pos])tiles[p.pos].classList.add('here');
+  renderTurn();renderScore();
+}
+function bumpStars(){
+  [$('#turnStars')].forEach(e=>{e.classList.remove('pop');void e.offsetWidth;e.classList.add('pop');});
+}
+function startGame(ids){
+  S.players=ids.map(id=>({char:CHARS.find(c=>c.id===id),pos:0,stars:0}));
+  S.turn=0;S.phase='roll';S.busy=false;
+  buildBoard();
+  tokens=S.players.map(p=>{const d=document.createElement('div');d.className='token';d.innerHTML=minifig(p.char);$('#board').appendChild(d);return d;});
+  $('#setup').hidden=true;$('#game').hidden=false;
+  place();setButtons();msg(`${cur().char.name}, press ROLL THE DICE!`);
+}
+
+/* ---------- turn flow ---------- */
+async function moveSteps(p,count,dir=1){
+  const i=S.players.indexOf(p);
+  for(let k=0;k<count;k++){
+    if((dir>0&&p.pos>=TOTAL)||(dir<0&&p.pos<=0))break;
+    p.pos+=dir;place();
+    const t=tokens[i];t.classList.remove('hop');void t.offsetWidth;t.classList.add('hop');
+    sfx.step();await sleep(reduce?120:330);
+  }
+}
+async function onRoll(){
+  if(S.phase!=='roll'||S.busy)return;
+  S.busy=true;setButtons();
+  const p=cur(),n=1+rnd(6);
+  msg('Rolling...');
+  await rollDice(n);
+  msg(`${p.char.name} rolled ${n}!`);
+  await sleep(350);
+  await moveSteps(p,Math.min(n,TOTAL-p.pos));
+  await resolve(p);
+}
+/* Every landing triggers its cell, every time: no visited flags anywhere. Positions live on the players, not the cells. */
+const MAXCHAIN=6,MAXLOOP=40;
+async function resolve(p){
+  let chain=0,loops=0;
+  while(true){
+    if(++loops>MAXLOOP){msg('That is enough moving! Next player.');await sleep(900);break;}
+    if(p.pos>=TOTAL){await win(p);return;}
+    const t=LAYOUT[p.pos];
+    if(t==='C'||t==='O'||t==='S'){
+      const r=await askQuestion(t);
+      if(r.ok){p.stars++;sfx.star();bumpStars();place();msg('CORRECT! GREAT JOB!');break;}
+      msg('NOT QUITE! MOVE BACK 3 SPACES!');sfx.down();await sleep(1200);
+      await moveSteps(p,3,-1);   /* stops at START, never before it */
+      continue;                  /* the destination cell activates normally */
+    }else if(t==='STAR'){
+      p.stars++;sfx.star();place();bumpStars();msg('GREAT JOB! YOU EARN A STAR!');await sleep(1100);
+      break;
+    }else if(t==='ROLL'){
+      sfx.up();msg('LUCKY YOU! ROLL AGAIN!');await sleep(1100);
+      S.phase='roll';S.busy=false;setButtons();return;
+    }else if(t==='FWD'||t==='BACK'){
+      if(chain>=MAXCHAIN){msg('That is enough moving! Next player.');await sleep(900);break;}
+      chain++;
+      if(t==='FWD'){sfx.up();msg('SUPER SPEED! MOVE FORWARD 2 SPACES!');await sleep(1100);await moveSteps(p,2);}
+      else{sfx.down();msg('OOPS! MOVE BACK 2 SPACES!');await sleep(1100);await moveSteps(p,2,-1);}
+      continue;
+    }else break;
+  }
+  S.phase='done';S.busy=false;setButtons();
+}
+function onNext(){
+  if(S.phase!=='done'||S.busy)return;
+  S.turn=(S.turn+1)%S.players.length;S.phase='roll';
+  place();setButtons();msg(`${cur().char.name}, press ROLL THE DICE!`);sfx.again();
+}
+
+/* ---------- questions ---------- */
+const bags={};
+function draw(key,arr){if(!bags[key]||!bags[key].length)bags[key]=shuffle(arr.slice());return bags[key].pop();}
+function makeQ(kind){
+  if(kind==='C'){
+    const col=draw('c',COLORS),others=shuffle(COLORS.filter(c=>c!==col)).slice(0,2);
+    const shapes=['brick','balloon','crayon','ball'].concat(['red','green','yellow'].includes(col)?['apple']:[]);
+    return{cls:'q-color',tag:'COLOR SPACE',art:artItem(col==='turquoise'?'brick':pick(shapes),PAL[col]),prompt:'What color is it?',say:'What color is it?',
+      choices:shuffle([col,...others]).map(c=>({text:`It is ${c}!`,ok:c===col})),answer:`It is ${col}!`};
+  }
+  const obj=draw(kind==='O'?'o':'s',OBJECTS),art=OBJ_ART[obj](PAL[OBJC[obj]]);
+  if(kind==='O'){
+    const others=shuffle(OBJECTS.filter(o=>o!==obj)).slice(0,2);
+    return{cls:'q-object',tag:'SCHOOL OBJECT SPACE',art,prompt:'What is it?',say:'What is it?',
+      choices:shuffle([obj,...others]).map(o=>({text:`It is a ${o}!`,ok:o===obj})),answer:`It is a ${obj}!`};
+  }
+  const col=OBJC[obj],others=shuffle(COLORS.filter(c=>c!==col)).slice(0,2);
+  return{cls:'q-speak',tag:'SPEAKING CHALLENGE',art,promptHTML:`The ${obj} is <span class="blank" id="blank">&nbsp;</span>`,say:`Finish the sentence. The ${obj} is... what color?`,
+    choices:shuffle([col,...others]).map(c=>({text:c,ok:c===col})),answer:`The ${obj} is ${col}.`,fill:col,speak:true};
+}
+function askQuestion(kind){
+  return new Promise(res=>{
+    const q=makeQ(kind);q.tries=0;q.done=false;q.resolve=res;S.q=q;S.phase='question';
+    $('#qcard').className='qcard '+q.cls;
+    $('#qtag').textContent=q.tag;$('#qpic').innerHTML=q.art;
+    if(q.promptHTML)$('#qprompt').innerHTML=q.promptHTML;else $('#qprompt').textContent=q.prompt;
+    $('#qchoices').innerHTML=q.choices.map((c,i)=>`<button type="button" class="choice" data-i="${i}">${c.text}</button>`).join('');
+    const f=$('#qfeedback');f.textContent='';f.className='qfeedback';
+    $('#contBtn').hidden=true;$('#qmodal').hidden=false;
+    setTimeout(()=>{const b=$('#qchoices .choice');if(b)b.focus({preventScroll:true});},60);
+    setTimeout(()=>{if(S.q===q&&!q.done)say(q.say);},500);
+  });
+}
+/* One answer per question. Right: star. Wrong: the penalty (back 3) is applied once, by resolve(), after CONTINUE. */
+function choose(i){
+  const q=S.q;if(!q||q.done)return;
+  const kids=[...$('#qchoices').children],f=$('#qfeedback'),c=q.choices[i];
+  q.done=true;q.ok=!!c.ok;
+  kids.forEach(b=>{b.disabled=true;});
+  kids[i].classList.add(c.ok?'right':'wrong');
+  if(!c.ok)kids[q.choices.findIndex(x=>x.ok)].classList.add('right');
+  if(q.fill){const bl=$('#blank');if(bl)bl.textContent=q.fill;}
+  f.className='qfeedback '+(c.ok?'good':'bad');
+  f.textContent=c.ok?'CORRECT! GREAT JOB!'+(q.speak?' Now say it out loud!':''):'NOT QUITE! MOVE BACK 3 SPACES!';
+  if(c.ok)sfx.good();else sfx.bad();
+  setTimeout(()=>say(q.answer),700);
+  const cb=$('#contBtn');cb.textContent=c.ok?'CONTINUE':'MOVE BACK 3';cb.hidden=false;cb.focus({preventScroll:true});
+}
+function closeQuestion(){
+  const q=S.q;if(!q||!q.done)return;
+  $('#qmodal').hidden=true;S.q=null;S.phase='roll';
+  try{speechSynthesis.cancel();}catch(e){}
+  q.resolve({ok:q.ok});
+}
+
+/* ---------- winner ---------- */
+function confetti(){
+  const host=$('#confetti');host.innerHTML='';if(reduce)return;
+  const cols=Object.values(PAL).filter(c=>c!==PAL.white);
+  for(let i=0;i<46;i++){const b=document.createElement('i');b.style.left=Math.random()*100+'%';b.style.background=cols[i%cols.length];
+    b.style.animationDelay=(Math.random()*1.8)+'s';b.style.animationDuration=(2.6+Math.random()*2)+'s';b.style.setProperty('--r',(Math.random()*720-360)+'deg');host.appendChild(b);}
+}
+async function win(p){
+  S.phase='won';S.busy=false;place();setButtons();
+  msg(`${p.char.name} reached FINISH!`);
+  sfx.win();await sleep(900);
+  $('#winFig').innerHTML=minifig(p.char);
+  $('#winTitle').textContent=`${p.char.name} wins!`;
+  $('#finalScore').innerHTML=S.players.map(q=>`<span>${q.char.name} ${STAR} ${q.stars}</span>`).join('');
+  $('#win').hidden=false;confetti();
+  setTimeout(()=>say(`${p.char.name} wins! Great job!`),600);
+  setTimeout(()=>{const b=$('#againBtn');if(b)b.focus({preventScroll:true});},100);
+}
+
+/* ---------- wiring ---------- */
+function buildTitle(){
+  const cols=[PAL.red,PAL.yellow,PAL.green,PAL.orange,'#fff',PAL.pink,PAL.purple];let k=0;
+  $('#title').innerHTML='Colorful School Adventure!'.split(' ').map(w=>`<span class="w">${[...w].map(ch=>`<span class="l" style="color:${cols[k++%cols.length]}">${ch}</span>`).join('')}</span>`).join('');
+}
+function openDlg(id){$(id).hidden=false;}
+function closeDlg(id){$(id).hidden=true;}
+$('#rollBtn').addEventListener('click',onRoll);
+$('#nextBtn').addEventListener('click',onNext);
+$('#qchoices').addEventListener('click',e=>{const b=e.target.closest('.choice');if(b)choose(+b.dataset.i);});
+$('#sayBtn').addEventListener('click',()=>{const q=S.q;if(q){sfx.again();say(q.done?q.answer:q.say,true);}});
+$('#contBtn').addEventListener('click',closeQuestion);
+$('#rulesBtn').addEventListener('click',()=>openDlg('#rules'));
+$('#rulesClose').addEventListener('click',()=>closeDlg('#rules'));
+$('#rules').addEventListener('click',e=>{if(e.target.id==='rules')closeDlg('#rules');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#rules').hidden)closeDlg('#rules');});
+$('#soundBtn').addEventListener('click',()=>{soundOn=!soundOn;$('#soundBtn').textContent='SOUND: '+(soundOn?'ON':'OFF');$('#soundBtn').setAttribute('aria-pressed',String(soundOn));if(!soundOn){try{speechSynthesis.cancel();}catch(e){}}});
+$('#resetPicks').addEventListener('click',()=>{S.picks=[];renderSetup();});
+$('#startBtn').addEventListener('click',()=>{if(S.picks.length>=S.n){A();S.phase='roll';startGame(S.picks.slice());}});
+$('#againBtn').addEventListener('click',()=>{closeDlg('#win');$('#confetti').innerHTML='';startGame(S.players.map(p=>p.char.id));});
+$('#newBtn').addEventListener('click',()=>{closeDlg('#win');$('#confetti').innerHTML='';S.phase='setup';S.picks=[];$('#game').hidden=true;$('#setup').hidden=false;renderSetup();});
+buildTitle();buildDice();renderSetup();
+</script>
+
+</body></html>
